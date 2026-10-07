@@ -148,43 +148,33 @@ body {
   100% { transform: scale(1.6); opacity: 0; }
 }
 
-/* Theme Segmented Switcher (Auto / Dark / Light) */
-.theme-segmented-control {
-  display: inline-flex;
-  align-items: center;
-  padding: 4px;
-  border-radius: 9999px;
-  background: var(--surface);
-  border: 1px solid var(--border);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-  backdrop-filter: blur(12px);
-}
-
-.theme-segment-btn {
+/* Simple Theme Toggle Button */
+.theme-btn {
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  padding: 5px 12px;
+  padding: 6px 14px;
   border-radius: 9999px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
   font-family: var(--font-mono);
-  font-size: 0.74rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  background: transparent;
-  border: none;
+  font-size: 0.76rem;
+  font-weight: 600;
   cursor: pointer;
-  white-space: nowrap;
+  backdrop-filter: blur(12px);
   transition: all 180ms ease;
 }
 
-.theme-segment-btn:hover {
-  color: var(--text);
+.theme-btn:hover {
+  border-color: var(--border-hover);
+  background: var(--surface-hover);
+  box-shadow: var(--neon-glow);
+  transform: translateY(-1px);
 }
 
-.theme-segment-btn.active {
-  color: var(--accent-contrast);
-  background: var(--accent);
-  box-shadow: var(--neon-glow);
+.theme-icon {
+  font-size: 0.85rem;
 }
 
 /* ============================================================

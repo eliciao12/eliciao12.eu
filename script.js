@@ -59,62 +59,56 @@ function updateLastFMWidget() {
 // Auto-refresh Last.fm activity every 30 seconds
 setInterval(updateLastFMWidget, 30000);
 
-// 3. Automatic & Manual Theme Switcher (Auto / Dark / Light)
-const systemDarkQuery = window.matchMedia('(prefers-color-scheme: dark)');
-const themeButtons = document.querySelectorAll('.theme-segment-btn');
+// 3. Simple Theme Toggle Button (Automatic Default + One-Click Toggle)
+const themeToggleBtn = document.getElementById('theme-toggle-btn');
+const themeIconEl = themeToggleBtn ? themeToggleBtn.querySelector('.theme-icon') : null;
+const themeLabelEl = themeToggleBtn ? themeToggleBtn.querySelector('.theme-label') : null;
 const rootElement = document.documentElement;
 
-function getEffectiveTheme(mode) {
-  if (mode === 'auto') {
-    return systemDarkQuery.matches ? 'dark' : 'light';
-  }
-  return mode;
+function getInitialTheme() {
+  const saved = localStorage.getItem('user-theme');
+  if (saved) return saved;
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
 }
 
-function applyThemeMode(mode, showNotification = false) {
-  const effectiveTheme = getEffectiveTheme(mode);
-  rootElement.setAttribute('data-theme', effectiveTheme);
-  rootElement.setAttribute('data-theme-mode', mode);
-  localStorage.setItem('theme-mode', mode);
+function setTheme(theme, notify = false) {
+  rootElement.setAttribute('data-theme', theme);
+  localStorage.setItem('user-theme', theme);
 
-  // Update active state in segmented control
-  themeButtons.forEach((btn) => {
-    if (btn.getAttribute('data-mode') === mode) {
-      btn.classList.add('active');
+  if (themeIconEl && themeLabelEl) {
+    if (theme === 'dark') {
+      themeIconEl.textContent = '🌙';
+      themeLabelEl.textContent = 'Dark';
     } else {
-      btn.classList.remove('active');
+      themeIconEl.textContent = '☀️';
+      themeLabelEl.textContent = 'Light';
     }
-  });
+  }
 
   updateLastFMWidget();
 
-  if (showNotification) {
-    const label = mode === 'auto' ? `Auto (System ${effectiveTheme})` : `${mode.toUpperCase()} mode`;
-    showToast(`Theme: ${label}`);
+  if (notify) {
+    showToast(`Switched to ${theme.toUpperCase()} mode ✨`);
   }
 }
 
-// Listen for OS system theme changes
-systemDarkQuery.addEventListener('change', () => {
-  const currentMode = localStorage.getItem('theme-mode') || 'auto';
-  if (currentMode === 'auto') {
-    applyThemeMode('auto');
+// Initial theme setup (auto-detects system if first visit)
+setTheme(getInitialTheme(), false);
+
+// Listen to OS theme changes if user hasn't manually set one yet
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+  if (!localStorage.getItem('user-theme')) {
+    setTheme(e.matches ? 'dark' : 'light', false);
   }
 });
 
-// Segmented button click handlers
-themeButtons.forEach((btn) => {
-  btn.addEventListener('click', () => {
-    const selectedMode = btn.getAttribute('data-mode');
-    if (selectedMode) {
-      applyThemeMode(selectedMode, true);
-    }
+if (themeToggleBtn) {
+  themeToggleBtn.addEventListener('click', () => {
+    const current = rootElement.getAttribute('data-theme') || 'dark';
+    const next = current === 'dark' ? 'light' : 'dark';
+    setTheme(next, true);
   });
-});
-
-// Initial boot: default to 'auto' (automatic system detection)
-const initialMode = localStorage.getItem('theme-mode') || 'auto';
-applyThemeMode(initialMode, false);
+}
 
 // 4. Copy Email with Toast Feedback
 const copyBtn = document.getElementById('copy-email-btn');
