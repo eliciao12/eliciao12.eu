@@ -1,6 +1,6 @@
 // ============================================================
 // eliciao12.eu — Tokyo Cyber Engine
-// System-Aware Theme + Live Last.fm & CET Clock
+// System-Aware Theme + Live Last.fm & CET Clock + New Features
 // ============================================================
 
 // 1. Live CET Clock
@@ -146,3 +146,131 @@ if (copyBtn) {
     }
   });
 }
+
+// 5. Typing Animation
+(function initTypingAnimation() {
+  const el = document.getElementById('typed-name');
+  const cursor = document.querySelector('.type-cursor');
+  if (!el) return;
+
+  const text = 'eliciao12';
+  let i = 0;
+
+  function type() {
+    if (i <= text.length) {
+      el.textContent = text.slice(0, i);
+      i++;
+      setTimeout(type, i === 1 ? 600 : 90 + Math.random() * 40);
+    } else {
+      // Done typing — fade cursor to blinking
+      if (cursor) cursor.classList.add('blink');
+    }
+  }
+
+  // Small delay before starting
+  setTimeout(type, 400);
+})();
+
+// 6. GitHub Stats (public API, no auth needed)
+(function fetchGitHubStats() {
+  const reposEl = document.getElementById('gh-repos');
+  const starsEl = document.getElementById('gh-stars');
+  const followersEl = document.getElementById('gh-followers');
+  if (!reposEl) return;
+
+  fetch('https://api.github.com/users/eliciao12')
+    .then((r) => r.json())
+    .then((user) => {
+      if (reposEl) reposEl.textContent = user.public_repos ?? '—';
+      if (followersEl) followersEl.textContent = user.followers ?? '—';
+
+      // Fetch stars by summing across repos
+      return fetch('https://api.github.com/users/eliciao12/repos?per_page=100');
+    })
+    .then((r) => r.json())
+    .then((repos) => {
+      if (!Array.isArray(repos)) return;
+      const totalStars = repos.reduce((sum, r) => sum + (r.stargazers_count || 0), 0);
+      if (starsEl) starsEl.textContent = totalStars;
+    })
+    .catch(() => {
+      if (reposEl) reposEl.textContent = '—';
+      if (starsEl) starsEl.textContent = '—';
+      if (followersEl) followersEl.textContent = '—';
+    });
+})();
+
+// 7. Visitor Counter (using api.counterapi.dev — free, no key needed)
+(function fetchVisitorCount() {
+  const el = document.getElementById('visitor-count');
+  if (!el) return;
+
+  const namespace = 'eliciao12eu';
+  const key = 'visits';
+
+  fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`)
+    .then((r) => r.json())
+    .then((data) => {
+      if (data && data.count !== undefined) {
+        // Animate the number counting up
+        const target = data.count;
+        const start = Math.max(0, target - Math.min(40, Math.floor(target * 0.08)));
+        let current = start;
+        const step = Math.ceil((target - start) / 20);
+
+        function countUp() {
+          current = Math.min(current + step, target);
+          el.textContent = current.toLocaleString();
+          if (current < target) {
+            requestAnimationFrame(countUp);
+          }
+        }
+        countUp();
+      }
+    })
+    .catch(() => {
+      if (el) el.textContent = '—';
+    });
+})();
+
+// 8. Contact Form (mailto fallback — zero backend)
+(function initContactForm() {
+  const form = document.getElementById('contact-form');
+  if (!form) return;
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const name = form.querySelector('#contact-name').value.trim();
+    const email = form.querySelector('#contact-email').value.trim();
+    const message = form.querySelector('#contact-message').value.trim();
+
+    if (!message) {
+      showToast('Please enter a message ✉️');
+      return;
+    }
+
+    const subject = encodeURIComponent(`Message from ${name || 'visitor'} via eliciao12.eu`);
+    const body = encodeURIComponent(
+      `From: ${name || 'Anonymous'}${email ? `\nReply to: ${email}` : ''}\n\n${message}`
+    );
+
+    window.location.href = `mailto:web@eliciao12.eu?subject=${subject}&body=${body}`;
+    showToast('Opening mail client... 🚀');
+    form.reset();
+  });
+})();
+
+// 9. Scroll-to-Top Button
+(function initScrollTop() {
+  const btn = document.getElementById('scroll-top-btn');
+  if (!btn) return;
+
+  window.addEventListener('scroll', () => {
+    btn.classList.toggle('visible', window.scrollY > 300);
+  }, { passive: true });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+})();

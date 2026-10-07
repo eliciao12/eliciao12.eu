@@ -209,6 +209,25 @@ body {
   display: inline-block;
 }
 
+/* Typing cursor */
+.type-cursor {
+  display: inline-block;
+  color: var(--accent);
+  font-weight: 300;
+  opacity: 1;
+  margin-left: 2px;
+  animation: none;
+}
+
+.type-cursor.blink {
+  animation: blink-caret 1.1s step-end infinite;
+}
+
+@keyframes blink-caret {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
 .hero-bio {
   font-size: 1.15rem;
   line-height: 1.7;
@@ -334,6 +353,42 @@ body {
   filter: contrast(1.02);
 }
 
+/* GitHub Stats Card */
+.github-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.stat-value {
+  font-family: var(--font-mono);
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+}
+
+.stat-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text-dim);
+}
+
+/* Visitor Counter */
+.visitor-display {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
 /* ============================================================
    Actions & Connect Section
    ============================================================ */
@@ -413,6 +468,77 @@ body {
 }
 
 /* ============================================================
+   Contact Form Section
+   ============================================================ */
+.contact-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 14px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-dim);
+}
+
+.form-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
+  outline: none;
+  backdrop-filter: blur(12px);
+  transition: border-color 180ms ease, box-shadow 180ms ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.form-input::placeholder {
+  color: var(--text-dim);
+}
+
+.form-input:focus {
+  border-color: var(--border-hover);
+  box-shadow: 0 0 0 3px rgba(244, 63, 94, 0.12);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 110px;
+  line-height: 1.6;
+}
+
+.form-submit {
+  align-self: flex-start;
+  gap: 12px;
+}
+
+/* ============================================================
    Toast Notification
    ============================================================ */
 .toast-container {
@@ -437,6 +563,44 @@ body {
 .toast-container.visible {
   opacity: 1;
   transform: translateX(-50%) translateY(0);
+}
+
+/* ============================================================
+   Scroll-to-Top Button
+   ============================================================ */
+.scroll-top-btn {
+  position: fixed;
+  bottom: 28px;
+  right: 24px;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(12px);
+  box-shadow: var(--card-shadow);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(12px);
+  transition: opacity 220ms ease, transform 220ms ease, border-color 180ms ease, box-shadow 180ms ease;
+  z-index: 999;
+}
+
+.scroll-top-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.scroll-top-btn:hover {
+  border-color: var(--border-hover);
+  box-shadow: var(--neon-glow);
+  transform: translateY(-2px);
 }
 
 /* ============================================================
@@ -484,6 +648,10 @@ body {
     grid-template-columns: 1fr;
   }
 
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
   .colophon-footer {
     flex-direction: column;
     gap: 10px;
@@ -492,5 +660,9 @@ body {
 
   .clock-digits {
     font-size: 1.9rem;
+  }
+
+  .stat-value {
+    font-size: 1.4rem;
   }
 }
