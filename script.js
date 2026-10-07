@@ -233,34 +233,6 @@ if (copyBtn) {
     });
 })();
 
-// 8. Contact Form (mailto fallback — zero backend)
-(function initContactForm() {
-  const form = document.getElementById('contact-form');
-  if (!form) return;
-
-  form.addEventListener('submit', (e) => {
-    e.preventDefault();
-
-    const name = form.querySelector('#contact-name').value.trim();
-    const email = form.querySelector('#contact-email').value.trim();
-    const message = form.querySelector('#contact-message').value.trim();
-
-    if (!message) {
-      showToast('Please enter a message ✉️');
-      return;
-    }
-
-    const subject = encodeURIComponent(`Message from ${name || 'visitor'} via eliciao12.eu`);
-    const body = encodeURIComponent(
-      `From: ${name || 'Anonymous'}${email ? `\nReply to: ${email}` : ''}\n\n${message}`
-    );
-
-    window.location.href = `mailto:web@eliciao12.eu?subject=${subject}&body=${body}`;
-    showToast('Opening mail client... 🚀');
-    form.reset();
-  });
-})();
-
 // 9. Scroll-to-Top Button
 (function initScrollTop() {
   const btn = document.getElementById('scroll-top-btn');
