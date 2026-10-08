@@ -1,9 +1,4 @@
-// ============================================================
-// eliciao12.eu — Tokyo Cyber Engine
-// System-Aware Theme + Live Last.fm & CET Clock + New Features
-// ============================================================
 
-// 1. Live CET Clock
 function updateCETClock() {
   const clockElement = document.getElementById('cet-clock');
   const dateElement = document.getElementById('cet-date');
@@ -11,7 +6,6 @@ function updateCETClock() {
 
   const now = new Date();
 
-  // Central European Time (Europe/Paris)
   const timeFormatter = new Intl.DateTimeFormat('en-GB', {
     timeZone: 'Europe/Paris',
     hour: '2-digit',
@@ -36,7 +30,6 @@ function updateCETClock() {
 setInterval(updateCETClock, 1000);
 updateCETClock();
 
-// 2. Themed Last.fm Live Listening
 const LASTFM_USER = 'eliciao';
 
 function getThemedLastFMUrl(effectiveTheme) {
@@ -56,10 +49,9 @@ function updateLastFMWidget() {
   img.src = getThemedLastFMUrl(effectiveTheme);
 }
 
-// Auto-refresh Last.fm activity every 30 seconds
 setInterval(updateLastFMWidget, 30000);
 
-// 3. Simple Theme Toggle Button (Automatic Default + One-Click Toggle)
+
 const themeToggleBtn = document.getElementById('theme-toggle-btn');
 const themeIconEl = themeToggleBtn ? themeToggleBtn.querySelector('.theme-icon') : null;
 const themeLabelEl = themeToggleBtn ? themeToggleBtn.querySelector('.theme-label') : null;
@@ -92,10 +84,10 @@ function setTheme(theme, notify = false) {
   }
 }
 
-// Initial theme setup (auto-detects system if first visit)
+
 setTheme(getInitialTheme(), false);
 
-// Listen to OS theme changes if user hasn't manually set one yet
+
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
   if (!localStorage.getItem('user-theme')) {
     setTheme(e.matches ? 'dark' : 'light', false);
@@ -110,7 +102,6 @@ if (themeToggleBtn) {
   });
 }
 
-// 4. Copy Email with Toast Feedback
 const copyBtn = document.getElementById('copy-email-btn');
 const toast = document.getElementById('toast');
 let toastTimer = null;
@@ -147,7 +138,7 @@ if (copyBtn) {
   });
 }
 
-// 5. Typing Animation
+
 (function initTypingAnimation() {
   const el = document.getElementById('typed-name');
   const cursor = document.querySelector('.type-cursor');
@@ -162,7 +153,6 @@ if (copyBtn) {
       i++;
       setTimeout(type, i === 1 ? 600 : 90 + Math.random() * 40);
     } else {
-      // Done typing — fade cursor to blinking
       if (cursor) cursor.classList.add('blink');
     }
   }
@@ -171,7 +161,6 @@ if (copyBtn) {
   setTimeout(type, 400);
 })();
 
-// 6. GitHub Stats (public API, no auth needed)
 (function fetchGitHubStats() {
   const reposEl = document.getElementById('gh-repos');
   const starsEl = document.getElementById('gh-stars');
@@ -183,9 +172,7 @@ if (copyBtn) {
     .then((user) => {
       if (reposEl) reposEl.textContent = user.public_repos ?? '—';
       if (followersEl) followersEl.textContent = user.followers ?? '—';
-
-      // Fetch stars by summing across repos
-      return fetch('https://api.github.com/users/eliciao12/repos?per_page=100');
+ fetch('https://api.github.com/users/eliciao12/repos?per_page=100');
     })
     .then((r) => r.json())
     .then((repos) => {
@@ -200,7 +187,6 @@ if (copyBtn) {
     });
 })();
 
-// 7. Visitor Counter (using api.counterapi.dev — free, no key needed)
 (function fetchVisitorCount() {
   const el = document.getElementById('visitor-count');
   if (!el) return;
@@ -233,7 +219,6 @@ if (copyBtn) {
     });
 })();
 
-// 9. Scroll-to-Top Button
 (function initScrollTop() {
   const btn = document.getElementById('scroll-top-btn');
   if (!btn) return;
