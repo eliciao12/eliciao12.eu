@@ -4,51 +4,44 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>eliciao12 — portfolio</title>
-    <!-- Crisp Tokyo SVG Favicon (No external image) -->
     <link
       rel="icon"
       href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='%23f43f5e'/><text x='16' y='21' font-size='15' text-anchor='middle' fill='white' font-family='sans-serif' font-weight='bold'>e</text></svg>"
     />
     <meta
       name="description"
-      content="Personal portfolio and workspace of eliciao12. Computer Science student."
+      content="eliciao12 portfolio"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
-    <!-- Ambient Tokyo neon backdrop -->
     <div class="bg-ambience" aria-hidden="true"></div>
 
     <div class="page-wrapper">
-      <!-- Top Navigation: Live status & Automatic/Manual Theme Switcher -->
       <header class="top-nav" id="top">
         <div class="status-pill">
           <span class="status-dot"></span>
-          <span>ONLINE &bull; CET / EUROPE</span>
+          <span>ONLINE &bull; CET / ITALY</span>
         </div>
 
-        <!-- Simple Theme Toggle Button -->
         <button id="theme-toggle-btn" class="theme-btn" type="button" aria-label="Toggle theme" title="Toggle theme">
           <span class="theme-icon">🌙</span>
           <span class="theme-label">Dark</span>
         </button>
       </header>
 
-      <!-- Hero Profile Section (Pure Typography — No PFP) -->
       <section class="hero-section" id="hero">
-        <p class="eyebrow">CS Student &bull; Europe</p>
+        <p class="eyebrow">CS Student &bull; ITALY</p>
         <h1 class="hero-title">
           hii, I'm <span class="neon-accent" id="typed-name"></span><span class="type-cursor">|</span>
         </h1>
         <p class="hero-bio">
-          Undergraduate <strong>Computer Science student</strong> based in Europe.
+          Undergraduate <strong>Computer Science student</strong> based in Italy.
         </p>
       </section>
 
-      <!-- Live Status & Activity Widgets (2-Column Bento Deck) -->
       <section class="widgets-section" id="activity">
         <div class="widgets-grid">
-          <!-- Widget 1: Live CET Time -->
           <article class="widget-card">
             <div class="widget-header">
               <span class="widget-label">Local Time</span>
@@ -60,7 +53,6 @@
             </div>
           </article>
 
-          <!-- Widget 2: Live Last.fm Listening Status -->
           <article class="widget-card lastfm-card">
             <div class="widget-header">
               <span class="widget-label">Listening Status</span>
@@ -92,7 +84,6 @@
             </div>
           </article>
 
-          <!-- Widget 3: GitHub Stats -->
           <article class="widget-card github-stats-card">
             <div class="widget-header">
               <span class="widget-label">GitHub Activity</span>
@@ -120,7 +111,6 @@
             </div>
           </article>
 
-          <!-- Widget 4: Visitor Counter -->
           <article class="widget-card visitor-card">
             <div class="widget-header">
               <span class="widget-label">Visitor Count</span>
@@ -134,7 +124,6 @@
         </div>
       </section>
 
-      <!-- Actions & Contact Section -->
       <section class="actions-section" id="connect">
         <h2 class="actions-title">Connect &bull; Direct Links</h2>
         <div class="actions-row">
@@ -225,17 +214,14 @@
         </div>
       </section>
 
-      <!-- Colophon Footer -->
       <footer class="colophon-footer">
         <p>&copy; 2026 eliciao12.eu</p>
         <p><a href="https://github.com/eliciao12/eliciao12.eu" target="_blank" rel="noreferrer">Source code</a></p>
       </footer>
     </div>
 
-    <!-- Toast Notification Element -->
     <div id="toast" class="toast-container" role="status" aria-live="polite"></div>
 
-    <!-- Scroll to Top Button -->
     <button id="scroll-top-btn" class="scroll-top-btn" type="button" aria-label="Scroll to top" title="Back to top">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M18 15l-6-6-6 6"/>

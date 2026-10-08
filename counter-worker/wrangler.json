@@ -1,0 +1,17 @@
+{
+  "name": "eliciao12-counter",
+  "main": "index.js",
+  "compatibility_date": "2026-07-25",
+  "routes": [
+    {
+      "pattern": "counter.eliciao12.eu",
+      "custom_domain": true
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "VISITS",
+      "id": "0e2d94461b7948b587028ac69fd9854d"
+    }
+  ]
+}

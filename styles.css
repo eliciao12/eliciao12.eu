@@ -1,13 +1,10 @@
-/* ============================================================
-   eliciao12.eu — Tokyo Cyberpunk Edition
-   System Fonts Only — Zero External Dependencies
-   ============================================================ */
+
 
 :root {
   --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 
-  /* Tokyo Cyber Dark (Default) */
+  
   --bg: #0c0e17;
   --bg-glow-1: rgba(244, 63, 94, 0.14);
   --bg-glow-2: rgba(56, 189, 248, 0.12);
@@ -28,7 +25,7 @@
 }
 
 [data-theme="light"] {
-  /* Tokyo Cyber Light */
+  
   --bg: #f8f7ff;
   --bg-glow-1: rgba(244, 63, 94, 0.08);
   --bg-glow-2: rgba(56, 189, 248, 0.09);
@@ -73,7 +70,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Ambient Tokyo Neon Backdrop */
+
 .bg-ambience {
   position: fixed;
   inset: 0;
@@ -96,9 +93,7 @@ body {
   gap: 36px;
 }
 
-/* ============================================================
-   Top Header & Automatic/Manual Theme Switcher
-   ============================================================ */
+
 .top-nav {
   display: flex;
   justify-content: space-between;
@@ -148,7 +143,7 @@ body {
   100% { transform: scale(1.6); opacity: 0; }
 }
 
-/* Simple Theme Toggle Button */
+
 .theme-btn {
   display: inline-flex;
   align-items: center;
@@ -177,9 +172,7 @@ body {
   font-size: 0.85rem;
 }
 
-/* ============================================================
-   Hero Profile Section (No PFP, Pure Typography)
-   ============================================================ */
+
 .hero-section {
   display: flex;
   flex-direction: column;
@@ -209,7 +202,7 @@ body {
   display: inline-block;
 }
 
-/* Typing cursor */
+
 .type-cursor {
   display: inline-block;
   color: var(--accent);
@@ -240,9 +233,7 @@ body {
   font-weight: 600;
 }
 
-/* ============================================================
-   Widgets Section (2-Column Bento Deck)
-   ============================================================ */
+
 .widgets-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
@@ -296,7 +287,7 @@ body {
   text-decoration: none;
 }
 
-/* Clock Display */
+
 .clock-display {
   display: flex;
   flex-direction: column;
@@ -318,7 +309,7 @@ body {
   color: var(--text-muted);
 }
 
-/* Last.fm Card */
+
 .lastfm-card {
   cursor: default;
 }
@@ -353,7 +344,7 @@ body {
   filter: contrast(1.02);
 }
 
-/* GitHub Stats Card */
+
 .github-stats-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -382,16 +373,14 @@ body {
   color: var(--text-dim);
 }
 
-/* Visitor Counter */
+
 .visitor-display {
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 
-/* ============================================================
-   Actions & Connect Section
-   ============================================================ */
+
 .actions-section {
   display: flex;
   flex-direction: column;
@@ -467,9 +456,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* ============================================================
-   Toast Notification
-   ============================================================ */
+
 .toast-container {
   position: fixed;
   bottom: 28px;
@@ -494,9 +481,7 @@ body {
   transform: translateX(-50%) translateY(0);
 }
 
-/* ============================================================
-   Scroll-to-Top Button
-   ============================================================ */
+
 .scroll-top-btn {
   position: fixed;
   bottom: 28px;
@@ -532,9 +517,7 @@ body {
   transform: translateY(-2px);
 }
 
-/* ============================================================
-   Colophon Footer
-   ============================================================ */
+
 .colophon-footer {
   display: flex;
   justify-content: space-between;
@@ -556,7 +539,7 @@ body {
   color: var(--accent);
 }
 
-/* Responsive */
+
 @media (max-width: 680px) {
   .page-wrapper {
     padding: 20px 16px 60px;

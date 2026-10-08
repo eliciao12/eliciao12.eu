@@ -32,8 +32,8 @@ updateCETClock();
 
 const LASTFM_USER = 'eliciao';
 
-function getThemedLastFMUrl(effectiveTheme) {
-  const isLight = effectiveTheme === 'light';
+function getThemedLastFMUrl(theme) {
+  const isLight = theme === 'light';
   const textColor = isLight ? '111827' : 'f1f5f9';
   const artistColor = isLight ? '4b5563' : '94a3b8';
   const metaColor = isLight ? '9ca3af' : '64748b';
@@ -45,12 +45,12 @@ function getThemedLastFMUrl(effectiveTheme) {
 function updateLastFMWidget() {
   const img = document.getElementById('lastfm-svg');
   if (!img) return;
-  const effectiveTheme = document.documentElement.getAttribute('data-theme') || 'dark';
-  img.src = getThemedLastFMUrl(effectiveTheme);
+
+  const theme = document.documentElement.getAttribute('data-theme') || 'dark';
+  img.src = getThemedLastFMUrl(theme);
 }
 
 setInterval(updateLastFMWidget, 30000);
-
 
 const themeToggleBtn = document.getElementById('theme-toggle-btn');
 const themeIconEl = themeToggleBtn ? themeToggleBtn.querySelector('.theme-icon') : null;
@@ -84,13 +84,11 @@ function setTheme(theme, notify = false) {
   }
 }
 
+setTheme(getInitialTheme());
 
-setTheme(getInitialTheme(), false);
-
-
-window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
   if (!localStorage.getItem('user-theme')) {
-    setTheme(e.matches ? 'dark' : 'light', false);
+    setTheme(event.matches ? 'dark' : 'light');
   }
 });
 
@@ -120,6 +118,7 @@ function showToast(message) {
 if (copyBtn) {
   copyBtn.addEventListener('click', async () => {
     const email = 'web@eliciao12.eu';
+
     try {
       if (navigator.clipboard && navigator.clipboard.writeText) {
         await navigator.clipboard.writeText(email);
@@ -131,13 +130,13 @@ if (copyBtn) {
         document.execCommand('copy');
         document.body.removeChild(textarea);
       }
+
       showToast('Copied web@eliciao12.eu to clipboard ✓');
-    } catch (err) {
+    } catch {
       showToast('Contact: web@eliciao12.eu');
     }
   });
 }
-
 
 (function initTypingAnimation() {
   const el = document.getElementById('typed-name');
@@ -145,78 +144,96 @@ if (copyBtn) {
   if (!el) return;
 
   const text = 'eliciao12';
-  let i = 0;
+  let index = 0;
 
   function type() {
-    if (i <= text.length) {
-      el.textContent = text.slice(0, i);
-      i++;
-      setTimeout(type, i === 1 ? 600 : 90 + Math.random() * 40);
-    } else {
-      if (cursor) cursor.classList.add('blink');
+    if (index <= text.length) {
+      el.textContent = text.slice(0, index);
+      index += 1;
+      setTimeout(type, index === 1 ? 600 : 90 + Math.random() * 40);
+    } else if (cursor) {
+      cursor.classList.add('blink');
     }
   }
 
-  // Small delay before starting
   setTimeout(type, 400);
 })();
 
-(function fetchGitHubStats() {
+async function fetchGitHubStats() {
   const reposEl = document.getElementById('gh-repos');
   const starsEl = document.getElementById('gh-stars');
   const followersEl = document.getElementById('gh-followers');
+
   if (!reposEl) return;
 
-  fetch('https://api.github.com/users/eliciao12')
-    .then((r) => r.json())
-    .then((user) => {
-      if (reposEl) reposEl.textContent = user.public_repos ?? '—';
-      if (followersEl) followersEl.textContent = user.followers ?? '—';
- fetch('https://api.github.com/users/eliciao12/repos?per_page=100');
-    })
-    .then((r) => r.json())
-    .then((repos) => {
-      if (!Array.isArray(repos)) return;
-      const totalStars = repos.reduce((sum, r) => sum + (r.stargazers_count || 0), 0);
-      if (starsEl) starsEl.textContent = totalStars;
-    })
-    .catch(() => {
-      if (reposEl) reposEl.textContent = '—';
-      if (starsEl) starsEl.textContent = '—';
-      if (followersEl) followersEl.textContent = '—';
-    });
-})();
+  try {
+    const userResponse = await fetch('https://api.github.com/users/eliciao12');
+    const user = await userResponse.json();
+
+    reposEl.textContent = user.public_repos ?? '—';
+    followersEl.textContent = user.followers ?? '—';
+
+    const reposResponse = await fetch('https://api.github.com/users/eliciao12/repos?per_page=100');
+    const repos = await reposResponse.json();
+
+    if (Array.isArray(repos)) {
+      const totalStars = repos.reduce((sum, repo) => sum + (repo.stargazers_count || 0), 0);
+      if (starsEl) {
+        starsEl.textContent = totalStars.toLocaleString();
+      }
+    }
+  } catch {
+    reposEl.textContent = '—';
+    if (starsEl) starsEl.textContent = '—';
+    if (followersEl) followersEl.textContent = '—';
+  }
+}
+
+fetchGitHubStats();
 
 (function fetchVisitorCount() {
   const el = document.getElementById('visitor-count');
   if (!el) return;
 
-  const namespace = 'eliciao12eu';
-  const key = 'visits';
+  const endpoints = [
+    'https://counter.eliciao12.eu/count',
+    'https://api.counterapi.dev/v1/eliciao12eu/visits/up',
+  ];
 
-  fetch(`https://api.counterapi.dev/v1/${namespace}/${key}/up`)
-    .then((r) => r.json())
-    .then((data) => {
-      if (data && data.count !== undefined) {
-        // Animate the number counting up
-        const target = data.count;
-        const start = Math.max(0, target - Math.min(40, Math.floor(target * 0.08)));
-        let current = start;
-        const step = Math.ceil((target - start) / 20);
+  const loadCount = async () => {
+    for (const url of endpoints) {
+      try {
+        const response = await fetch(url, { cache: 'no-store' });
+        if (!response.ok) continue;
 
-        function countUp() {
-          current = Math.min(current + step, target);
-          el.textContent = current.toLocaleString();
-          if (current < target) {
-            requestAnimationFrame(countUp);
-          }
+        const data = await response.json();
+        const target = Number(data?.count ?? data?.total ?? 0);
+
+        if (Number.isFinite(target)) {
+          const start = Math.max(0, target - Math.min(40, Math.floor(target * 0.08)));
+          let current = start;
+          const step = Math.ceil((target - start) / 20) || 1;
+
+          const animate = () => {
+            current = Math.min(current + step, target);
+            el.textContent = current.toLocaleString();
+            if (current < target) {
+              requestAnimationFrame(animate);
+            }
+          };
+
+          animate();
+          return;
         }
-        countUp();
+      } catch {
+        // continue to next fallback
       }
-    })
-    .catch(() => {
-      if (el) el.textContent = '—';
-    });
+    }
+
+    el.textContent = '—';
+  };
+
+  loadCount();
 })();
 
 (function initScrollTop() {
